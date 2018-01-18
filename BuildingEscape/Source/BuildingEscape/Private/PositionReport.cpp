@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Copyright Shawn Kim 2018
 
 #include "PositionReport.h"
 #include "Runtime/Engine/Classes/Gameframework/Actor.h"
@@ -15,7 +15,6 @@ UPositionReport::UPositionReport()
 	// ...
 }
 
-
 // Called when the game starts
 void UPositionReport::BeginPlay()
 {
@@ -28,7 +27,6 @@ void UPositionReport::BeginPlay()
 
 	UE_LOG(LogTemp, Warning, TEXT("%s is at %s (%s, %s)"), *ObjectName, *ObjectPos, *ObjectPosX, *ObjectPosY);
 }
-
 
 // Called every frame
 void UPositionReport::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
