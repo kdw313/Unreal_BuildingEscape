@@ -2,6 +2,7 @@
 
 #include "OpenDoor.h"
 #include "Runtime/Engine/Classes/Gameframework/Actor.h"
+#include "Engine/World.h"
 
 // Sets default values for this component's properties
 UOpenDoor::UOpenDoor()
@@ -19,15 +20,7 @@ void UOpenDoor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// don't forget to set the object that's gonna be moved from static -> Movable
-	// Referencing owner
-	AActor* MyOwner = GetOwner();	
-
-	// Pitch(Y), Yaw(Z), Roll(X)
-	FRotator NewRotator = FRotator(0.0f, OpenAngle, 0.0f);
-
-	// Set Actor's rotation
-	MyOwner->SetActorRotation(NewRotator);
+	ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
 }
 
 
@@ -36,6 +29,23 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// ...
+	// when the specified actor is on the plate(volume)
+	if (PressurePlate->IsOverlappingActor(ActorThatOpens)) 
+	{
+		OpenDoor();
+	}
 }
 
+
+void UOpenDoor::OpenDoor()
+{
+	// don't forget to set the object that's gonna be moved from static -> Movable
+	// Referencing owner
+	AActor* MyOwner = GetOwner();
+
+	// Pitch(Y), Yaw(Z), Roll(X)
+	FRotator NewRotator = FRotator(0.0f, OpenAngle, 0.0f);
+
+	// Set Actor's rotation
+	MyOwner->SetActorRotation(NewRotator);
+}
