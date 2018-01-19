@@ -3,6 +3,7 @@
 #include "Grabber.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
+#include "Runtime/Engine/Classes/Components/PrimitiveComponent.h"
 
 #define OUT
 
@@ -35,25 +36,55 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 
+	/// Get FirstPlayer ViewPoint Location, Rotation
+	FVector PlayerViewPointLocation;
+	FRotator PlayerViewPointRotation;
+	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(
+		OUT PlayerViewPointLocation,
+		OUT PlayerViewPointRotation
+	);
+
+	/// QueryParams for LineTraceSingleByObjectType
+	FCollisionQueryParams TraceParameters(FName(TEXT("")), false, GetOwner());
+
+	/// Line-trace
+	FHitResult Hit;
+
+	/// View Point (Guide line by DrawDebugLine)
+	FVector LineTraceEnd = PlayerViewPointLocation + (PlayerViewPointRotation.Vector() * Reach);
+
+
 	/// if the physics handle is attached
-		/// move the object that is held
+	if (PhysicsHandle->GrabbedComponent) {
+		/// move the object to where the holder is
+		PhysicsHandle->SetTargetLocation(LineTraceEnd);
+	}
 }
 
 void UGrabber::Grab() {
 	UE_LOG(LogTemp, Warning, TEXT("UGrabber::Grab() Called"));
 
 	/// Try and reach any actors with physics body collision channel set
-	GetFirstPhysicisBodyInReach();
+	auto HitResult = GetFirstPhysicisBodyInReach();
+	auto ComponentToGrab = HitResult.GetComponent();
+	auto ActorHit = HitResult.GetActor();
 
 	/// If hit something then attach a physics handle
-		// TODO attach physics handle
+	if (ActorHit) {
+		PhysicsHandle->GrabComponent(
+			ComponentToGrab,
+			NAME_None,
+			ComponentToGrab->GetOwner()->GetActorLocation(),
+			true // rotate it
+		);
+	}
 }
 
 
 void UGrabber::Release() {
 	UE_LOG(LogTemp, Warning, TEXT("UGrabber::Release() Called"));
 
-	// TODO attach physics handle
+	PhysicsHandle->ReleaseComponent();
 }
 
 
@@ -144,5 +175,5 @@ const FHitResult UGrabber::GetFirstPhysicisBodyInReach()
 		UE_LOG(LogTemp, Warning, TEXT("Line trace hit: %s"), *(HitActor->GetName()));
 	}
 
-	return FHitResult();
+	return Hit;
 }
