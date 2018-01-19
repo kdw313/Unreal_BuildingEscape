@@ -19,12 +19,12 @@ void UOpenDoor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// dont forget to set the object that's gonna be moved from static -> Movable
+	// don't forget to set the object that's gonna be moved from static -> Movable
 	// Referencing owner
-	AActor* MyOwner = GetOwner();
+	AActor* MyOwner = GetOwner();	
 
 	// Pitch(Y), Yaw(Z), Roll(X)
-	FRotator NewRotator = FRotator(0.0f, -80.0f, 0.0f);
+	FRotator NewRotator = FRotator(0.0f, OpenAngle, 0.0f);
 
 	// Set Actor's rotation
 	MyOwner->SetActorRotation(NewRotator);
