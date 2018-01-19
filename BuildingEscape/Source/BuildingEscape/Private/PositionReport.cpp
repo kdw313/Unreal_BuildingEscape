@@ -25,7 +25,7 @@ void UPositionReport::BeginPlay()
 	FString ObjectPosX = FString::SanitizeFloat(GetOwner()->GetTransform().GetLocation().X);
 	FString ObjectPosY = FString::SanitizeFloat(GetOwner()->GetTransform().GetLocation().Y);
 
-	UE_LOG(LogTemp, Warning, TEXT("%s is at %s (%s, %s)"), *ObjectName, *ObjectPos, *ObjectPosX, *ObjectPosY);
+	//UE_LOG(LogTemp, Warning, TEXT("%s is at %s (%s, %s)"), *ObjectName, *ObjectPos, *ObjectPosX, *ObjectPosY);
 }
 
 // Called every frame

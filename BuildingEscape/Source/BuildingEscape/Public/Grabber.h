@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "PhysicsEngine/PhysicsHandleComponent.h"
+#include "Runtime/Engine/Classes/Components/InputComponent.h"
+
 #include "Grabber.generated.h"
 
 
@@ -24,10 +27,29 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+
 private:
 
 	// Distance from the center of the pawn
 	UPROPERTY(EditAnywhere)
 	float Reach = 100.0f;
 	
+	UPhysicsHandleComponent* PhysicsHandle = nullptr;
+
+	UInputComponent* InputComponent = nullptr;
+
+	// Look for attached Physics Handle
+	void FindPhysicsHandleComponent();
+
+	// Look for attached Input Component only in runtime
+	void SetupInputComponent();
+
+	// Ray-cast and grab what's in reach
+	void Grab();
+
+	// Release what's in reach and grabbed
+	void Release();
+
+	// Returns 
+	const FHitResult GetFirstPhysicisBodyInReach();
 };
