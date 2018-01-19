@@ -34,18 +34,33 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	{
 		OpenDoor();
 	}
+
+	// Check times how much door was open by delay and close it
+	if (GetWorld()->GetTimeSeconds() - DoorLastOpenTime > DoorClosingDelay) {
+		CloseDoor();
+	}
 }
 
 
+// Opens door
 void UOpenDoor::OpenDoor()
 {
+	DoorLastOpenTime = GetWorld()->GetTimeSeconds();
+
 	// don't forget to set the object that's gonna be moved from static -> Movable
 	// Referencing owner
 	AActor* MyOwner = GetOwner();
 
-	// Pitch(Y), Yaw(Z), Roll(X)
-	FRotator NewRotator = FRotator(0.0f, OpenAngle, 0.0f);
-
 	// Set Actor's rotation
-	MyOwner->SetActorRotation(NewRotator);
+	MyOwner->SetActorRotation(FRotator(0.0f, OpenAngle, 0.0f));
+}
+
+// Closes door, set rotation back to 0
+void UOpenDoor::CloseDoor()
+{
+	// Referencing owner
+	AActor* MyOwner = GetOwner();
+
+	// Set Actor's rotation back to closed
+	MyOwner->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
 }
