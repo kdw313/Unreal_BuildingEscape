@@ -52,4 +52,10 @@ private:
 
 	// Returns 
 	const FHitResult GetFirstPhysicisBodyInReach();
+
+	// Returns Start of Current ReachLine  
+	FVector GetReachLineEnd() const;
+
+	// Returns End of Current ReachLine
+	FVector GetReachLineStart() const;
 };
