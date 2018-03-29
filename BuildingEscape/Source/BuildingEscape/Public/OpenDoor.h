@@ -42,8 +42,7 @@ private:
 	float DoorClosingDelay = 1.0f;
 
 	float DoorLastOpenTime;
+	
+	float GetTotalMassOfActorsOnPlate();
 
-
-	UPROPERTY(VisibleAnywhere)
-	AActor* ActorThatOpens;
 };
