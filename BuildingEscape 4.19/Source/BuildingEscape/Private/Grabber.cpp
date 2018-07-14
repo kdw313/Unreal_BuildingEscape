@@ -23,7 +23,7 @@ void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UE_LOG(LogTemp, Warning, TEXT("Grabber Instanciated1!"));
+	UE_LOG(LogTemp, Warning, TEXT("Grabber Instanciated!"));
 
 	FindPhysicsHandleComponent();
 	SetupInputComponent();
@@ -34,6 +34,8 @@ void UGrabber::BeginPlay()
 void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	if (!PhysicsHandle) { return; }
 
 	/// if the physics handle is attached
 	if (PhysicsHandle->GrabbedComponent) {
@@ -53,6 +55,8 @@ void UGrabber::Grab() {
 
 	/// If hit something then attach a physics handle
 	if (ActorHit) {
+
+		if (!PhysicsHandle) { return; }
 		PhysicsHandle->GrabComponentAtLocationWithRotation(
 			ComponentToGrab,
 			EName::NAME_None,
@@ -66,6 +70,7 @@ void UGrabber::Grab() {
 void UGrabber::Release() {
 	UE_LOG(LogTemp, Warning, TEXT("UGrabber::Release() Called"));
 
+	if (!PhysicsHandle) { return; }
 	PhysicsHandle->ReleaseComponent();
 }
 
