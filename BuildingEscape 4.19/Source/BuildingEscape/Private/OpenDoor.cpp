@@ -39,7 +39,6 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 		OpenDoor();
 		DoorLastOpenTime = GetWorld()->GetTimeSeconds();
 		UE_LOG(LogTemp, Warning, TEXT("door open"));
-
 	}
 	
 	// Check times how much door was open by delay and close it
@@ -77,6 +76,8 @@ float UOpenDoor::GetTotalMassOfActorsOnPlate()
 	float TotalMass = 0.0f;
 
 	TArray<AActor*> OverlappingActors;
+	
+	if (!PressurePlate) { return TotalMass; }
 	
 	// find all the overlapping actors
 	PressurePlate->GetOverlappingActors(OUT OverlappingActors);
