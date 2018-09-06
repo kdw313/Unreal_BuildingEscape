@@ -34,46 +34,16 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	// Poll the Trigger Volume
 	// old code
 	// when the specified actor is on the plate(volume)
-	if (GetTotalMassOfActorsOnPlate() > 30.0f) // TODO make into a parameter
+	if (GetTotalMassOfActorsOnPlate() > TriggerMass) // TODO make into a parameter
 	{
-		OpenDoor();
-		DoorLastOpenTime = GetWorld()->GetTimeSeconds();
+		OnOpenDoor.Broadcast();
 		UE_LOG(LogTemp, Warning, TEXT("door open"));
 	}
-	
-	// Check times how much door was open by delay and close it
-	if (GetWorld()->GetTimeSeconds() - DoorLastOpenTime > DoorClosingDelay) {
-		CloseDoor();
+	else
+	{
+		OnCloseDoor.Broadcast();
 	}
 }
-
-// Opens door
-void UOpenDoor::OpenDoor()
-{
-	/*
-	DoorLastOpenTime = GetWorld()->GetTimeSeconds();
-
-	// don't forget to set the object that's gonna be moved from static -> Movable
-	// Referencing owner
-	AActor* MyOwner = GetOwner();
-
-	// Set Actor's rotation
-	MyOwner->SetActorRotation(FRotator(0.0f, OpenAngle, 0.0f));
-	*/
-
-	OnOpenRequest.Broadcast();
-}
-
-// Closes door, set rotation back to 0
-void UOpenDoor::CloseDoor()
-{
-	// Referencing owner
-	AActor* MyOwner = GetOwner();
-
-	// Set Actor's rotation back to closed
-	MyOwner->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
-}
-
 
 float UOpenDoor::GetTotalMassOfActorsOnPlate()
 {
