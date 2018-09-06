@@ -70,7 +70,12 @@ void UGrabber::Grab() {
 void UGrabber::Release() {
 	UE_LOG(LogTemp, Warning, TEXT("UGrabber::Release() Called"));
 
-	if (!PhysicsHandle) { return; }
+
+	if (!PhysicsHandle)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s Release() -> Missing physics handle component"), *GetOwner()->GetName());
+	}
+
 	PhysicsHandle->ReleaseComponent();
 }
 
@@ -81,7 +86,7 @@ void UGrabber::FindPhysicsHandleComponent()
 
 	if (PhysicsHandle == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("%s -> Missing physics handle component"), *GetOwner()->GetName());
+		UE_LOG(LogTemp, Error, TEXT("%s FindPhysicsHandleComponent() -> Missing physics handle component"), *GetOwner()->GetName());
 	}
 
 }
@@ -126,7 +131,7 @@ const FHitResult UGrabber::GetFirstPhysicisBodyInReach()
 	/// for debugging
 	AActor* HitActor = Hit.GetActor();
 	if (HitActor) {
-		UE_LOG(LogTemp, Warning, TEXT("Line trace hit: %s"), *(HitActor->GetName()));
+		//UE_LOG(LogTemp, Warning, TEXT("Line trace hit: %s"), *(HitActor->GetName()));
 	}
 
 	return Hit;

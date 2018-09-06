@@ -50,6 +50,7 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 // Opens door
 void UOpenDoor::OpenDoor()
 {
+	/*
 	DoorLastOpenTime = GetWorld()->GetTimeSeconds();
 
 	// don't forget to set the object that's gonna be moved from static -> Movable
@@ -58,6 +59,9 @@ void UOpenDoor::OpenDoor()
 
 	// Set Actor's rotation
 	MyOwner->SetActorRotation(FRotator(0.0f, OpenAngle, 0.0f));
+	*/
+
+	OnOpenRequest.Broadcast();
 }
 
 // Closes door, set rotation back to 0
