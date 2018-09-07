@@ -17,14 +17,12 @@ UOpenDoor::UOpenDoor()
 	// ...
 }
 
-
 // Called when the game starts
 void UOpenDoor::BeginPlay()
 {
 	Super::BeginPlay();
 
 }
-
 
 // Called every frame
 void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -39,7 +37,8 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 		OnOpenDoor.Broadcast();
 		UE_LOG(LogTemp, Warning, TEXT("door open"));
 	}
-	else
+	else if (GetTotalMassOfActorsOnPlate() < TriggerMass
+			&& GetOwner()->GetActorRotation().Yaw != 0)
 	{
 		OnCloseDoor.Broadcast();
 	}
